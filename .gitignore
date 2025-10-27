@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual environment
+.venv/
+
+# Data (large files kept out of repo)
+data/raw/
+data/interim/
+data/processed/
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.orc
+*.jsonl
+
+# Local databases / binary data files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs / temp files
+*.log
+*.tmp
+
+# Environment / secrets
+.env
+.env.*            # e.g., .env.local
+
+# IDE settings
+.idea/
+.vscode/
+
+# Test caches / reports
+.pytest_cache/
+.coverage*
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+
+# OS junk
+.DS_Store
+Thumbs.db
