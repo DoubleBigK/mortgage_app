@@ -1,23 +1,21 @@
-# Project Template
+# Symulator realnych kosztów kredytu hipotecznego
 
-This repository is a **base template** for new Python projects. Use it to quickly start with a clean structure, virtualenv targets, and basic tooling.
+> **Uwaga – gałąź deweloperska (`dev`)**  
+> Ta wersja jest w trakcie aktywnego rozwoju. Interfejs, logika obliczeń oraz zakres funkcji mogą ulegać zmianom, a część modułów może być nieukończona lub niestabilna.
 
-## Create your own repo (GitHub UI)
+## O projekcie
 
-1. Open **this template repository** on GitHub.
-2. Click **Use this template** → **Create a new repository**.
-3. Enter your **repository name** (your project’s name).
-4. Choose visibility (public/private) and click **Create repository**.
+Aplikacja pomaga zrozumieć **realny koszt kredytu hipotecznego** – nie tylko nominalną ratę, ale również:
 
-## Set up locally
+- wpływ **przedpłat** (jednorazowych i cyklicznych) na czas trwania kredytu i łączny koszt odsetek,
+- działanie **zniżek / promocji** (np. za konto, kartę, ubezpieczenie) oraz ich „cenę” w długim terminie,
+- efekt **produktów dodatkowych** (ubezpieczenia, pakiety, cross-sell) na marżę, prowizję i całkowity koszt,
 
-```bash
-#1. Clone reop into your project dir
-git clone git@github.com:DoubleBigK/<your-project>.git
-#2. Get there 
-cd <your-project>
-#3. Create venv, install dependencies and  register a Jupyter kernel for this project
-make install
-```
-## Change README
-After scaffolding your project, replace this README with your own.
+
+Celem aplikacji jest **transparentne pokazanie liczb** i skutków decyzji takich jak:
+- czy opłaca się brać dodatkowy produkt w zamian za niższą marżę,
+- ile realnie zyskuję, gdy robię regularne przedpłaty,
+- która z kilku ofert jest tańsza po uwzględnieniu opłat początkowych, zniżek i warunków cross-sell.
+
+> **Disclaimer**  
+> Aplikacja ma charakter poglądowy i edukacyjny. Wyniki obliczeń nie stanowią porady finansowej ani rekomendacji zakupu jakiegokolwiek produktu bankowego.
