@@ -6,8 +6,9 @@ class Basic(TypedDict):
     mortgage_amount: int
     LTV: float
     annual_intrest_rate: float
+    commission_rate: float
     duration: int
-    installment_type: int
+    installment_type: str
     risk_premium: float
 
 class Additional(TypedDict):

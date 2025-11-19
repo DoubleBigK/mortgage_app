@@ -165,13 +165,22 @@ class Basic:
         self.sis(round(1 - down_payment / property_value, 2), "LTV")
     def annual_interest_rate(self):
         annual_interest_rate = st.number_input(  # region
-            label="Oprocentowanie [%]",
+            label="Oprocentowanie [p.p.]",
             min_value=1.0,
             value=7.00,
             step=0.01,
             format="%.2f",
         ) / 100  # endregion
         self.sis(annual_interest_rate, "annual_intrest_rate")
+    def commission_rate(self):
+        commission_rate = st.number_input(  # region
+            label="Prowizja [p.p.]",
+            min_value=0.0,
+            value=0.0,
+            step=0.1,
+            format="%.1f",
+        ) / 100  # endregion
+        self.sis(commission_rate, "commission_rate")
     def duration_years(self):
         self.duration_years = st.number_input(  # region
             label="Czas trwania [lata]",
@@ -198,9 +207,9 @@ class Basic:
         self.sis(translate[installment_type], "installment_type")
     def risk_premium(self):
         risk_premium = st.number_input(  # region
-            label="risk_premium",
+            label="Dodatek za LTV > 80% [p.p.]",
             min_value=0.00,
-            value=0.10,
+            value=0.25,
             step=0.01,
             format="%.2f",
         ) / 100  # endregion
@@ -217,20 +226,16 @@ class Basic:
                 self.duration_years()
             with col3:
                 st.number_input(
-                    "Wartość hipoteki",
+                    "Wartość hipoteki [zł]",
                     value=self.get("down_payment")+self.get("property_value"),
                     disabled=True
                 )
                 self.duration_rest()
             with col4:
-                st.number_input(
-                    "Wkład własny [%]",
-                    value=int(100*(1-self.get("LTV"))),
-                    disabled=True
-                )
+                st.number_input("LTV [%]", value=int(100*self.get("LTV")), disabled=True)
                 self.installment_type()
             with col5:
-                st.number_input("LTV", value=int(100*self.get("LTV")), disabled=True)
+                self.commission_rate()
                 self.risk_premium()
 
 class Additional:
@@ -251,14 +256,6 @@ class Additional:
     def upfront_costs(self):
         c1, c2, c3 = st.columns(3)
         with c1:
-            commission = st.number_input(  # region
-                label="Prowizja [%]",
-                min_value=0.0,
-                value=0.0,
-                step=0.1,
-                format="%.1f",
-            )  / 100# endregion
-        with c2:
             apprisal = st.number_input(  # region
                 label="Wycena [zł]",
                 min_value=0,
@@ -266,7 +263,7 @@ class Additional:
                 step=100,
                 format="%d",
             )  # endregion
-        with c3:
+        with c2:
             annex = st.number_input(  # region
                 label="Aneks [zł]",
                 min_value=0,
@@ -274,7 +271,15 @@ class Additional:
                 step=100,
                 format="%d",
             )  # endregion
-        self.sis((commission,apprisal,annex), "upfront")
+        with c3:
+            other = st.number_input(  # region
+                label="Pozostałe [zł]",
+                min_value=0,
+                value=0,
+                step=10,
+                format="%d",
+            )# endregion
+        self.sis((apprisal,annex,other), "upfront")
     def discounts(self):
         discounts = []
         labels = ["Lokalizacja", "Klient banku", "Deklaracja wpływów"]
@@ -376,6 +381,7 @@ class Additional:
                 self.discounts()
             with st.expander("Produkty dodatkowe", expanded=False):
                 self.products()
+
 
 
 
