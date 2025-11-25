@@ -1,14 +1,16 @@
 import streamlit as st
 import ui
-
-def RENDER():
+from modules.money import cashflows, upfront, summaries
+import viz
+def render():
     ui.inputs.mortgage.standard("main_mortgage")
-    st.write(st.session_state["main_mortgage"])
-    # inputs.basic_mortgage_params()
-    # inputs.additional_products()
-    # st.session_state["cashflow"] = cashFlow.create_entire(**st.session_state["mortgage_params"])
-    # summary.mortgage_display(**st.session_state)
-    # st.write(st.session_state["cashflow"])
+    cashflows.calculate_all("main_mortgage")
+    upfront.calculate_all("main_mortgage")
+    summaries.calculate_all("main_mortgage")
+    ui.summary.mortgage_display("main_mortgage")
+    viz.mortgage.cashflows("main_mortgage")
+    #st.write(st.session_state["main_mortgage"])
+
 
 if __name__ == "__main__":
-    RENDER()
+    render()

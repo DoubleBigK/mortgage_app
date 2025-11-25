@@ -1,6 +1,7 @@
 import streamlit as st
 from app.config import configure_streamlit
 from state.state import initialize
+
 configure_streamlit()
 initialize()
 pg = st.navigation(

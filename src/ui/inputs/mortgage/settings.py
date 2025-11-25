@@ -8,7 +8,6 @@ class PrepaymentHelper:
         self.mortgage_duration = modules.utils.get_from_state(  # region
                 self.mortgage_name,
                 "settings",
-                "basic",
                 "duration"
             ) # endregion
         self.prep_name = f"{mortgage_name}_prep"
@@ -134,8 +133,8 @@ class PrepaymentHelper:
 class Basic:
     def __init__(self, mortgage_name: str)->None:
         self.mortgage_name = mortgage_name
-        self.sis = lambda value, *keys: modules.utils.set_in_state(value, mortgage_name, "settings", "basic", *keys)
-        self.get = lambda *keys: modules.utils.get_from_state(mortgage_name, "settings", "basic", *keys)
+        self.sis = lambda value, *keys: modules.utils.set_in_state(value, mortgage_name, "settings", *keys)
+        self.get = lambda *keys: modules.utils.get_from_state(mortgage_name, "settings", *keys)
     def property_value(self):
         property_value = st.number_input(  # region
             label="Wartość niruchom. [zł]",
@@ -165,7 +164,7 @@ class Basic:
         self.sis(round(1 - down_payment / property_value, 2), "LTV")
     def annual_interest_rate(self):
         annual_interest_rate = st.number_input(  # region
-            label="Oprocentowanie [p.p.]",
+            label="Oprocentowanie [%]",
             min_value=1.0,
             value=7.00,
             step=0.01,
@@ -189,7 +188,7 @@ class Basic:
             value=25,
             step=1,
             format="%d"
-        )  # endregio
+        )  # endregion
     def duration_rest(self):
         duration_months = st.number_input(  # region
             label="[miesiące]",
@@ -227,7 +226,7 @@ class Basic:
             with col3:
                 st.number_input(
                     "Wartość hipoteki [zł]",
-                    value=self.get("down_payment")+self.get("property_value"),
+                    value=self.get("property_value")-self.get("down_payment"),
                     disabled=True
                 )
                 self.duration_rest()
@@ -241,8 +240,8 @@ class Basic:
 class Additional:
     def __init__(self, mortgage_name: str) -> None:
         self.mortgage_name = mortgage_name
-        self.sis = lambda value, *keys: modules.utils.set_in_state(value, mortgage_name, "settings", "additional", *keys)
-        self.get = lambda *keys: modules.utils.get_from_state(mortgage_name, "settings", "additional", *keys)
+        self.sis = lambda value, *keys: modules.utils.set_in_state(value, mortgage_name, "settings", *keys)
+        self.get = lambda *keys: modules.utils.get_from_state(mortgage_name, "settings", *keys)
     def prepayments(self):
         helper = PrepaymentHelper(self.mortgage_name)
         prepayments = helper.render()
@@ -281,6 +280,7 @@ class Additional:
             )# endregion
         self.sis((apprisal,annex,other), "upfront")
     def discounts(self):
+        division = [5, 5, 5, 1]
         discounts = []
         labels = ["Lokalizacja", "Klient banku", "Deklaracja wpływów"]
         cols = st.columns(4)
@@ -317,25 +317,25 @@ class Additional:
             discounts.append((margin, commission, not disabled))
         self.sis(discounts, "discounts")
     def products(self):
+        division = [5, 5, 5, 5, 5, 1]
         products = []
         product_dict = {
             "Ubezp. start": ("% kwoty kredytu", .01),
-            "Ubezp. msc": ("pp opro.", .01),
-            "Karta kredytowa": ("zł za rok", 10),
-            "Konto osobiste": ("zł za rok", 10)
+            "Ubezp. msc": ("zł/100k/msc salda", 5),
+            "Karta kredytowa": ("zł/msc", 10),
+            "Konto osobiste": ("zł/msc", 10)
         }
-        cols = st.columns(6)
+        cols = st.columns(division)
         cols[0].markdown("**Nazwa**")
         cols[1].markdown("**Rodzaj ceny**")
         cols[2].markdown("**Cena**")
         cols[3].markdown("**Zniżka marży [p.p.]**")
         cols[4].markdown("**Zniżka prowizji [p.p.]**")
-        cols[5].markdown("**Użyj**")
 
         for i, label in enumerate(product_dict):
-            c0, c1, c2, c3, c4, c5 = st.columns(6)
+            c0, c1, c2, c3, c4, c5 = st.columns(division)
             with c5:
-                disabled = not st.toggle(#region
+                use =  st.toggle(#region
                     "",
                     value=False,
                     key=f"config_additional_products_toggle_{label}_{self.mortgage_name}"
@@ -352,7 +352,7 @@ class Additional:
                     step=step,
                     key=f"config_additional_products_price_{label}_{self.mortgage_name}",
                     label_visibility="collapsed",
-                    disabled=disabled)
+                    disabled=not use)
             with c3:
                 margin = st.number_input(
                     "",
@@ -360,7 +360,7 @@ class Additional:
                     step=0.01,
                     key=f"config_additional_products_margin_{label}_{self.mortgage_name}",
                     label_visibility="collapsed",
-                    disabled=disabled) / 100
+                    disabled=not use) / 100
             with c4:
                 commission = st.number_input(
                     "",
@@ -368,8 +368,8 @@ class Additional:
                     step=0.1,
                     key=f"config_additional_products_commission_{label}_{self.mortgage_name}",
                     label_visibility="collapsed",
-                    disabled=disabled) / 100
-            products.append((price, margin, commission))
+                    disabled=not use) / 100
+            products.append((product_dict[label][0], price, margin, commission, use))
         self.sis(products, "products")
     def render(self) -> None:
         with st.expander("Ustawienia dodatkowe", expanded=False):
@@ -381,7 +381,6 @@ class Additional:
                 self.discounts()
             with st.expander("Produkty dodatkowe", expanded=False):
                 self.products()
-
 
 
 

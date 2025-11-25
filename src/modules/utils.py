@@ -132,3 +132,9 @@ def format_pln_compact(x: float) -> str:
         body = _format_polish_decimal(n / 1_000_000_000, 2) + " mld"
 
     return f"{sign}{body} zł"
+
+def format_to_percentage(value: float) -> str:
+    sign = "-" if value < 0 else ""
+    return f"{value*100:.2f}%"
+def last_or_default(arr: np.ndarray, default=None):
+    return arr[-1] if arr.size else default
