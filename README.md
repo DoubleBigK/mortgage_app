@@ -1,8 +1,5 @@
 # Symulator realnych kosztów kredytu hipotecznego
 
-> **Uwaga – gałąź deweloperska (`dev`)**  
-> Ta wersja jest w trakcie aktywnego rozwoju. Interfejs, logika obliczeń oraz zakres funkcji mogą ulegać zmianom, a część modułów może być nieukończona lub niestabilna.
-
 ## O projekcie
 
 Aplikacja pomaga zrozumieć **realny koszt kredytu hipotecznego** – nie tylko nominalną ratę, ale również:
