@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def static_field(text: str):
     st.markdown(
         f"""

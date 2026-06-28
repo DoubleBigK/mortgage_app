@@ -1,6 +1,6 @@
 import streamlit as st
 
-def RENDER():
+def render():
     st.header("O aplikacji")
     st.markdown(
         """
@@ -8,5 +8,8 @@ def RENDER():
         """
     )
 
+RENDER = render
+
+
 if __name__ == "__main__":
-    RENDER()
+    render()

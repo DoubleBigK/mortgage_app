@@ -1,27 +1,37 @@
 import streamlit as st
+
 from app.config import configure_streamlit
+from pages import credits_page, dashboard, dummy_page
 from state.state import initialize
 
 configure_streamlit()
 initialize()
+
 pg = st.navigation(
     {
-        "Podstawowe operacje": [
+        "Nawigacja": [
             st.Page(
-                page = "pages/input_page.py",
-                title="Wprowadź dane",
-                icon="🏠",
-            )
-        ],
-        "Informacje": [
+                dummy_page.render,
+                title="Mieszkania",
+                icon="🏢",
+                url_path="mieszkania",
+                default=True,
+            ),
             st.Page(
-                page = "pages/about.py",
-                title="O aplikacji",
-                icon="ℹ️",
-            )
+                credits_page.render,
+                title="Kredyty",
+                icon="💳",
+                url_path="kredyty",
+            ),
+            st.Page(
+                dashboard.render,
+                title="Kalkulator",
+                icon="🧮",
+                url_path="kalkulator",
+            ),
         ]
-
-    }
+    },
+    position="sidebar",
 )
 
 pg.run()

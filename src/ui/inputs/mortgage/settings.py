@@ -25,7 +25,7 @@ class PrepaymentHelper:
         with c1:
             prepayment_type = st.selectbox(
                 f"Rodzaj przedpłaty",
-                options=["Procent raty", "Kwota nadpłaty", "Cała rata"],
+                options=["Cała rata", "Procent raty", "Kwota nadpłaty"],
                 key=self.key_namer("type", sub_id)
             )
         with c2:
@@ -76,9 +76,9 @@ class PrepaymentHelper:
             min_end_nr = st.session_state[self.key_namer("start", sub_id)] + 1
             max_end_nr = self.mortgage_duration - subtract
             key = self.key_namer("end", sub_id)
-            ui.utils.input_number_key_trick(key, min_end_nr, max_end_nr)
+            ui.utils.input_number_key_trick(key, min_end_nr, max_end_nr, default = self.mortgage_duration)
             st.number_input(  # region
-                "Od raty nr",
+                "Do raty nr",
                 min_value=min_end_nr,
                 max_value=max_end_nr,
                 step=1,
