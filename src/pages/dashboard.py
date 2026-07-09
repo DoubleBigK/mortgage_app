@@ -1,11 +1,11 @@
 import streamlit as st
 
-from pages import about, cashflows, charts, input_page
+from pages import cashflows, charts, input_page
 
 
 def render():
-    data_tab, cashflow_tab, charts_tab, about_tab = st.tabs(
-        ["Dane", "Cashflow", "Wykresy", "O aplikacji"]
+    data_tab, cashflow_tab, charts_tab = st.tabs(
+        ["Dane", "Cashflow", "Wykresy"]
     )
 
     with data_tab:
@@ -14,8 +14,6 @@ def render():
         cashflows.render()
     with charts_tab:
         charts.render()
-    with about_tab:
-        about.render()
 
 
 if __name__ == "__main__":

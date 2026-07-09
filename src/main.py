@@ -1,7 +1,7 @@
 import streamlit as st
 
 from app.config import configure_streamlit
-from pages import credits_page, dashboard, dummy_page
+from pages import apartments_page, credits_page, dashboard, about
 from state.state import initialize
 
 configure_streamlit()
@@ -11,7 +11,7 @@ pg = st.navigation(
     {
         "Nawigacja": [
             st.Page(
-                dummy_page.render,
+                apartments_page.render,
                 title="Mieszkania",
                 icon="🏢",
                 url_path="mieszkania",
@@ -28,6 +28,12 @@ pg = st.navigation(
                 title="Kalkulator",
                 icon="🧮",
                 url_path="kalkulator",
+            ),
+            st.Page(
+                about.render,
+                title="O aplikacji",
+                icon="ℹ️",
+                url_path="about",
             ),
         ]
     },
